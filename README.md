@@ -1,10 +1,28 @@
 <p align="center">
-<img src="https://i.imgur.com/Ua7udoS.png" alt="Traffic Examination"/>
+<img width="897" height="566" alt="image" src="https://github.com/user-attachments/assets/2e0a472c-bf3f-4ce4-a460-cd545d84cb3f" />
+
 </p>
 
 <h1>Network Security Groups (NSGs) and Inspecting Traffic Between Azure Virtual Machines</h1>
-In this tutorial, we observe various network traffic to and from Azure Virtual Machines with Wireshark as well as experiment with Network Security Groups. <br />
+In this project, we use Wireshark to examine ICMP, SSH, DHCP, DNS, and RDP traffic to and from Azure Virtual Machines, while also configuring Network Security Groups to manage and secure network communication.</p>
+</p>
 
+- <b> ICMP (Internet Control Message Protocol):</b> ICMP is a network protocol used for diagnostics and error reporting, such as pinging to check if a device is reachable.
+
+- <b> SSH (Secure Shell):</b> SSH provides secure, encrypted remote access to devices, allowing users to manage systems over a network.
+
+- <b>DHCP (Dynamic Host Configuration Protocol):</b> DHCP automatically assigns IP addresses and network settings to devices, simplifying network connectivity.
+
+- <b>DNS (Domain Name System):</b> DNS converts human-readable domain names into IP addresses, enabling devices to locate websites or services on the internet.
+
+- <b>RDP (Remote Desktop Protocol):</b> RDP enables remote control of Windows systems, facilitating management and troubleshooting over a network.
+</p>
+ 
+Wireshark is a free tool that captures and analyzes network traffic, like observing the data packets traveling between computers on a network. It helps IT support staff troubleshoot issues, such as slow connections or errors, by showing detailed network activity. Think of it like a security camera recording and reviewing all the activity in a busy office to spot problems.
+</p>
+- + <i>Wireshark can be downloaded at https://www.wireshark.org/download.html</i> + -
+</p>
+<b><i>NOTE:</i></b> This demonstration uses Virtual Machines created in a previous project, ["Creating Windows and Linux Virtual Machines in Azure Portal"](https://github.com/tylergehm/vm)
 
 <h2>Video Demonstration</h2>
 
@@ -13,9 +31,9 @@ In this tutorial, we observe various network traffic to and from Azure Virtual M
 <h2>Environments and Technologies Used</h2>
 
 - Microsoft Azure (Virtual Machines/Compute)
-- Remote Desktop
-- Various Command-Line Tools
-- Various Network Protocols (SSH, RDH, DNS, HTTP/S, ICMP)
+- Remote Desktop Connection
+- Command-Line Tools
+- Network Protocols (SSH, RDH, DNS, HTTP/S, ICMP)
 - Wireshark (Protocol Analyzer)
 
 <h2>Operating Systems Used </h2>
