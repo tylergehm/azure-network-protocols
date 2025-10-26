@@ -137,7 +137,35 @@ The Linux NSG can be access in the Azure Portal. Opening up the Linux VM directo
 
 Once inside the Network settings, click on "Linux-VM-nsg" to access the Network Security Group for the Linux VM.
 
+<img width="1898" height="855" alt="image" src="https://github.com/user-attachments/assets/91ea937e-3d49-4abd-b405-5c797e3a0c87" />
 
+View of inside the Linux VM Network Security Group.
+
+<img width="1898" height="886" alt="image" src="https://github.com/user-attachments/assets/96bcbb50-fbda-4bba-969d-05f11470c09a" />
+
+To add the ICMP Firewall, click the "Settings" drop down box ---> click "Inbound Security Rules" ---> then click "Add"
+
+In the "Add inbound security rule" section, the first form to fill out is the Destination port ranges. In this section, an asterisk "*" will be placed, which represents any port. The port number is irrelevant in this case because ICMP does not use a port number.
+
+The protocol "ICMPv4" will be selected because we are testing the ping with an IPv4 Private IP Address.
+
+The action to be selected is "deny", which will block any incoming ICMP packets.
+
+The rule requires a name, so "DenyPing" is the name of the rule being put into place for this project.
+
+Once this is filled out, click "Add" to create the new security rule.
+
+<img width="1559" height="416" alt="image" src="https://github.com/user-attachments/assets/c6386274-d7d4-437c-bb73-86adc73c000a" />
+
+The ICMP Firewall has been successfully added into the Network Security Group for the Linux VM.
+
+<img width="1916" height="471" alt="image" src="https://github.com/user-attachments/assets/a7424481-e415-46ed-8a3e-c31fa486f5df" />
+
+Returning to the Windows 11 VM, the Linux VM will be pinged using Powershell. 
+
+The ping request timed out because the Linux VM security rule is now in place. 
+
+It can be observed in Wireshark that ping requets were sent but there is no reply because the incoming traffic is blocked on the Linux VM.
 
 <h2>Step 4 - Observe SSH Traffic </h2>
 
