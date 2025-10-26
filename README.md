@@ -4,7 +4,7 @@
 </p>
 
 <h1>Network Security Groups (NSGs) and Inspecting Traffic Between Azure Virtual Machines</h1>
-In this project, we use Wireshark to examine ICMP, SSH, DHCP, DNS, and RDP traffic to and from Azure Virtual Machines, while also configuring Network Security Groups to manage and secure network communication.</p>
+In this project, we use Wireshark to examine ICMP, SSH, DHCP, and DNS traffic to and from Azure Virtual Machines, while also configuring Network Security Groups to manage and secure network communication.</p>
 </p>
 
 - <b> ICMP (Internet Control Message Protocol):</b> ICMP is a network protocol used for diagnostics and error reporting, such as pinging to check if a device is reachable.
@@ -14,8 +14,6 @@ In this project, we use Wireshark to examine ICMP, SSH, DHCP, DNS, and RDP traff
 - <b>DHCP (Dynamic Host Configuration Protocol):</b> DHCP automatically assigns IP addresses and network settings to devices, simplifying network connectivity.
 
 - <b>DNS (Domain Name System):</b> DNS converts human-readable domain names into IP addresses, enabling devices to locate websites or services on the internet.
-
-- <b>RDP (Remote Desktop Protocol):</b> RDP enables remote control of Windows systems, facilitating management and troubleshooting over a network.
 </p>
  
 Wireshark is a free tool that captures and analyzes network traffic, like observing the data packets traveling between computers on a network. It helps IT support staff troubleshoot issues, such as slow connections or errors, by showing detailed network activity. Think of it like a security camera recording and reviewing all the activity in a busy office to spot problems.
@@ -50,8 +48,6 @@ Wireshark is a free tool that captures and analyzes network traffic, like observ
 - Step 4 - Observe SSH Traffic
 - Step 5 - Observe DHCP Traffic
 - Step 6 - Observe DNS Traffic
-- Step 7 - Observe RDP Traffic
-- Step 8 - Clean up project in Azure Portal
 
 <h2>Step 1 - Install Wireshark onto Windows 11 Virtual Machine </h2>
 
@@ -168,17 +164,86 @@ The ping request timed out because the Linux VM security rule is now in place.
 It can be observed in Wireshark that ping requets were sent but there is no reply because the incoming traffic is blocked on the Linux VM.
 
 <h2>Step 4 - Observe SSH Traffic </h2>
+SSH (Secure Shell) traffic refers to network data transmitted over the SSH protocol, which provides a secure, encrypted channel for remote access, file transfers, and command execution between devices. It typically uses TCP port 22 and is commonly used for managing servers or secure file transfers via tools like SCP or SFTP. The encryption ensures that data, such as login credentials and commands, remains confidential and protected from interception.
 
+<img width="952" height="512" alt="image" src="https://github.com/user-attachments/assets/adf641f1-9503-486e-a99d-1c05e9f9bb6b" />
+
+This step in the project will begin by changing the Wireshark filter from "icmp" to "ssh" to filter for SSH traffic.
+
+<img width="1475" height="225" alt="image" src="https://github.com/user-attachments/assets/aa52ac6b-cbdf-4167-a4a7-e7f0f01bf547" />
+
+Using Powershell in the Windows 11 VM, the Linux VM will be connected into using SSH. 
+
+The command typed will be "ssh Linux-VM@172.16.1.4" --- Linux-VM is the username for the Linux VM and 172.16.1.4 is the Private IP Address for the Linux VM.
+
+<img width="1470" height="329" alt="image" src="https://github.com/user-attachments/assets/10baf665-23fb-48d3-b62a-02f6d6549828" />
+
+Once the command was entered, Powershell verifies that the connection to the Linux VM is to be made. Type "Yes"
+
+Next, the password for the Linux VM user will be requested before the connection can be made.
+
+<img width="1903" height="784" alt="image" src="https://github.com/user-attachments/assets/03322ba0-77cf-4b0f-92f8-aab411858f0b" />
+
+The connection was successfully made and Wireshark captured all the SSH network traffic that occured during the process.
+
+The connection successfully logged into the Linux VM via SSH, as indicated by the prompt Linux-VM@Linux-VM:~$. This shows a shell session (likely Bash) on the Linux VM.
 
 <h2>Step 5 - Observe DHCP Traffic </h2>
+DHCP (Dynamic Host Configuration Protocol) traffic consists of network messages exchanged between a DHCP client and server to automatically assign and manage IP addresses and network configuration details, such as subnet masks and gateways. It typically involves a four-step process (Discover, Offer, Request, Acknowledge) to lease an IP address to a device. This traffic is essential for devices to join a network without manual configuration. DHCP uses UDP ports 67 and 68.
 
+<img width="954" height="169" alt="image" src="https://github.com/user-attachments/assets/666db282-512d-4e45-bafd-e56729bd5b89" />
+
+This step will begin by changing the Wireshark filter from SSH to UDP ports 67 and 68.
+
+The filter used will be "udp.port == 67 || udp.port == 68" 
+
+The Wireshark filter udp.port == 67 || udp.port == 68 is written this way to specify that it should capture UDP packets where either the source or destination port is 67 (DHCP server) or 68 (DHCP client). The || operator means "logical OR" in Wireshark's filter syntax, allowing the filter to match packets that satisfy either condition. This syntax ensures both client-to-server and server-to-client DHCP traffic is captured.
+
+<img width="1423" height="471" alt="image" src="https://github.com/user-attachments/assets/2623d27a-2535-4ccb-8bbf-c86dbef6ab18" />
+
+To observe DHCP traffic, the IP address on the Windows 11 VM must be released and renewed to trigger the DHCP process, which involves the client (VM) sending a request to the DHCP server and receiving a new IP address. Releasing the current IP address (e.g., using ipconfig /release) forces the VM to initiate a new DHCP handshake (Discover, Offer, Request, Acknowledge), generating observable network traffic on UDP ports 67 and 68. Without this, the VM may retain its existing IP lease, producing no DHCP traffic to capture.
+
+In order to do this, a script must be created and then deployed within Powershell. 
+
+The script will be created in Notepad with the commands "ipconfig /release" to release the current Private IP address and "ipconfig /renew" to give the Windows 11 VM a new Private IP address.
+
+<img width="938" height="591" alt="image" src="https://github.com/user-attachments/assets/4718c839-25b7-42e4-be95-f6cbf2cca546" />
+
+The script will be saved the "C:\" drive as "DHCP.bat". 
+
+A .bat file is a batch file used in Windows to execute a series of commands automatically in the Command Prompt or PowerShell. It contains plain-text commands, such as those to run programs or configure network settings, and is executed by double-clicking or calling it from a terminal. In this project, the DHCP.bat file will automate the release and renewal of an IP address to trigger DHCP traffic.
+
+<img width="1465" height="597" alt="image" src="https://github.com/user-attachments/assets/4b07b08c-6de8-49d2-b82c-873bcf69e02f" />
+
+The DHCP.bat was verified by using the "cd C:\" command to change the directory to the C:\ folder.
+
+Then the command "dir" was entered to show the directory for the C:\. The DHCP.bat file is present in the folder's directory.
+
+<img width="260" height="67" alt="image" src="https://github.com/user-attachments/assets/981b8112-3ffb-499e-a887-2b3647562936" />
+
+The command ".\dhcp.bat" was entered into Powershell to run the DHCP script; causing the IP address to be released and then renewed.
+
+<img width="1913" height="1016" alt="image" src="https://github.com/user-attachments/assets/454bb8c1-2c62-42d7-9b93-167c786a0ce8" />
+
+The DHCP script was successfully deployed and the DHCP traffic is observable in Wireshark. 
+
+We can see that the DHCP four way handshake has successfuly occurred.
+
+The DHCP four-way handshake is the process by which a client obtains an IP address from a DHCP server, involving four messages: Discover, Offer, Request, and Acknowledge (DORA). The client broadcasts a Discover message to locate a DHCP server, which responds with an Offer containing an available IP address and configuration details. The client then sends a Request to formally ask for the offered IP, and the server finalizes the process with an Acknowledge message, confirming the lease of the IP address.
 
 <h2>Step 6 - Observe DNS Traffic </h2>
+This step of the project revolves around observing DNS traffic. 
 
+DNS traffic refers to the network data exchanged between a client device and a Domain Name System (DNS) server to resolve domain names (e.g., www.example.com) into IP addresses. When a user attempts to access a website, the client sends a DNS query, and the server responds with the corresponding IP address, enabling the connection. This traffic is essential for navigating the internet and typically occurs over UDP port 53.
 
-<h2>Step 7 - Observe RDP Traffic </h2>
+<img width="1025" height="131" alt="image" src="https://github.com/user-attachments/assets/0355c2b6-9c8f-4381-b6f1-cfbf90d17aa9" />
 
+The first step of this process is to change the Wireshark filter to "dns"
 
-<h2>Step 8 - Clean up project in Azure Portal </h2>
-</p>
-<br />
+<img width="558" height="43" alt="image" src="https://github.com/user-attachments/assets/6b505cf6-1bc9-4302-a02e-fb7feee5ce18" />
+
+In Powershell, the command "nslookup linkedin.com" is typed in. Once this command is executed, PowerShell initiates a DNS query to resolve the domain name linkedin.com into an IP address.
+
+<img width="1906" height="706" alt="image" src="https://github.com/user-attachments/assets/5cdeda68-9d72-48df-9af4-490109f067ed" />
+
+The command was successfully executed and Wireshark captured the DNS traffic for this process.
