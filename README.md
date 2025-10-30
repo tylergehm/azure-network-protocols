@@ -20,7 +20,8 @@ Wireshark is a free tool that captures and analyzes network traffic, like observ
 </p>
 - + <i>Wireshark can be downloaded at https://www.wireshark.org/download.html</i> + -
 </p>
-<b><i>NOTE:</i></b> This demonstration uses Virtual Machines created in a previous project, ["Creating Windows and Linux Virtual Machines in Azure Portal"](https://github.com/tylergehm/vm)
+<b><i>NOTE:</i></b> This demonstration uses Virtual Machines created in a previous project:
+[Creating Virtual Machines in Azure Portal](https://github.com/tylergehm/vm)
 
 <h2>Video Demonstration</h2>
 
