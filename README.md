@@ -4,7 +4,7 @@
 </p>
 
 <h1>Network Security Groups (NSGs) and Inspecting Traffic Between Azure Virtual Machines</h1>
-In this project, we use Wireshark to examine ICMP, SSH, DHCP, and DNS traffic to and from Azure Virtual Machines, while also configuring Network Security Groups to manage and secure network communication.</p>
+In this project, we use Wireshark to examine ICMP, SSH, DHCP, DNS, and RDP traffic to and from Azure Virtual Machines, while also configuring Network Security Groups to manage and secure network communication.</p>
 </p>
 
 - <b> ICMP (Internet Control Message Protocol):</b> ICMP is a network protocol used for diagnostics and error reporting, such as pinging to check if a device is reachable.
@@ -14,6 +14,8 @@ In this project, we use Wireshark to examine ICMP, SSH, DHCP, and DNS traffic to
 - <b>DHCP (Dynamic Host Configuration Protocol):</b> DHCP automatically assigns IP addresses and network settings to devices, simplifying network connectivity.
 
 - <b>DNS (Domain Name System):</b> DNS converts human-readable domain names into IP addresses, enabling devices to locate websites or services on the internet.
+
+- <b>RDP (Remote Desktop Protocol):</b> RDP is a proprietary protocol developed by Microsoft that allows a user to connect to and control another computer remotely over a network connection, providing a graphical interface.
 </p>
  
 Wireshark is a free tool that captures and analyzes network traffic, like observing the data packets traveling between computers on a network. It helps IT support staff troubleshoot issues, such as slow connections or errors, by showing detailed network activity. Think of it like a security camera recording and reviewing all the activity in a busy office to spot problems.
@@ -49,12 +51,23 @@ Note: This demonstration uses Virtual Machines created in a previous project:  [
 - Step 4 - Observe SSH Traffic
 - Step 5 - Observe DHCP Traffic
 - Step 6 - Observe DNS Traffic
+- Step 7 - Observe RDP Traffic
+- Step 8 - Project Clean Up
 
 <h2>Step 1 - Install Wireshark onto Windows 11 Virtual Machine </h2>
 
-<img width="1486" height="545" alt="image" src="https://github.com/user-attachments/assets/0c97dde1-8e92-4132-bc86-4057ed27573b" />
-The project will begin by obtaining the Public IP Address of the Windows 11 Virtual Machine in the Azure Portal.
+Note: This demonstration uses a Virtual Machine created in a previous project:  [Creating Virtual Machines in Azure Portal](https://github.com/tylergehm/vm)
 </p>
+
+<img width="1674" height="283" alt="image" src="https://github.com/user-attachments/assets/7bf845e4-158b-4672-a735-93c7c1cf5e15" />
+This project will begin by selecting "Virtual Machines" on the Azure Portal home page.
+
+<img width="1187" height="434" alt="image" src="https://github.com/user-attachments/assets/fc5cf89c-e5b3-4e03-b343-ba6e2c8cb735" />
+Once inside the Virtual Machines page of Azure Portal, the Public IP Address to the Windows 11 Virtual Machine can be obtained. This is the VM that will be used for this demonstration. 
+</p>
+
+<img width="452" height="270" alt="image" src="https://github.com/user-attachments/assets/b7ddee2b-cbdf-405b-a399-cc509f1a2f68" /> </p>
+Once the IP Address for the Windows 11 VM has been obtained, hold the Windows Key + press "R" to open up the run command. In the box next to "Open", type the letters "mstsc" and press Enter. Mstsc stands for Microsoft Terminal Services Client. The Microsoft Terminal Services Client (MSTSC) is the client application built into Windows that uses the Remote Desktop Protocol (RDP) to establish a secure, graphical connection to a remote computer or server.
 
 <img width="532" height="302" alt="image" src="https://github.com/user-attachments/assets/17c5d870-4be1-4233-abac-53b2d301e0b6" />
 
@@ -167,7 +180,7 @@ It can be observed in Wireshark that ping requets were sent but there is no repl
 <h2>Step 4 - Observe SSH Traffic </h2>
 SSH (Secure Shell) traffic refers to network data transmitted over the SSH protocol, which provides a secure, encrypted channel for remote access, file transfers, and command execution between devices. It typically uses TCP port 22 and is commonly used for managing servers or secure file transfers via tools like SCP or SFTP. The encryption ensures that data, such as login credentials and commands, remains confidential and protected from interception.
 
-<img width="952" height="512" alt="image" src="https://github.com/user-attachments/assets/adf641f1-9503-486e-a99d-1c05e9f9bb6b" />
+<img width="872" height="193" alt="image" src="https://github.com/user-attachments/assets/b638f3d8-b65d-4081-9e67-87951d30b6bc" />
 
 This step in the project will begin by changing the Wireshark filter from "icmp" to "ssh" to filter for SSH traffic.
 
@@ -190,6 +203,10 @@ The connection was successfully made and Wireshark captured all the SSH network 
 The connection successfully logged into the Linux VM via SSH, as indicated by the prompt Linux-VM@Linux-VM:~$. This shows a shell session (likely Bash) on the Linux VM.
 
 <h2>Step 5 - Observe DHCP Traffic </h2>
+
+<img width="1024" height="1024" alt="image" src="https://github.com/user-attachments/assets/abc6b151-bc04-4eca-ae1a-14c143d011b3" /></p>
+
+
 DHCP (Dynamic Host Configuration Protocol) traffic consists of network messages exchanged between a DHCP client and server to automatically assign and manage IP addresses and network configuration details, such as subnet masks and gateways. It typically involves a four-step process (Discover, Offer, Request, Acknowledge) to lease an IP address to a device. This traffic is essential for devices to join a network without manual configuration. DHCP uses UDP ports 67 and 68.
 
 <img width="954" height="169" alt="image" src="https://github.com/user-attachments/assets/666db282-512d-4e45-bafd-e56729bd5b89" />
@@ -248,3 +265,7 @@ In Powershell, the command "nslookup linkedin.com" is typed in. Once this comman
 <img width="1906" height="706" alt="image" src="https://github.com/user-attachments/assets/5cdeda68-9d72-48df-9af4-490109f067ed" />
 
 The command was successfully executed and Wireshark captured the DNS traffic for this process.
+
+<h2>Step 7 - Observe RDP Traffic </h2>
+
+
