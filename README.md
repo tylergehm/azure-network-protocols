@@ -20,8 +20,6 @@ In this project, we use Wireshark to examine ICMP, SSH, DHCP, DNS, and RDP traff
  
 Wireshark is a free tool that captures and analyzes network traffic, like observing the data packets traveling between computers on a network. It helps IT support staff troubleshoot issues, such as slow connections or errors, by showing detailed network activity. Think of it like a security camera recording and reviewing all the activity in a busy office to spot problems.
 </p>
-- + <i>Wireshark can be downloaded at https://www.wireshark.org/download.html</i> + -
-</p>
 
 
 <h2>Video Demonstration</h2>
