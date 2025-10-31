@@ -268,4 +268,39 @@ The command was successfully executed and Wireshark captured the DNS traffic for
 
 <h2>Step 7 - Observe RDP Traffic </h2>
 
+RDP traffic refers to the network data exchanged between a client device and a server to establish and maintain a Remote Desktop Protocol (RDP) session. When a user connects to a remote computer , the client sends a request to the server, and the server responds by displaying its desktop interface, enabling the user to interact with the remote machine as if they were sitting in front of it. This traffic is essential for remote administration, technical support, and virtual desktop infrastructure, and typically occurs over TCP port 3389. </p>
+
+<img width="690" height="119" alt="image" src="https://github.com/user-attachments/assets/8c0ace2e-cae9-464a-ad00-09e3b0d3ae03" />
+</p>
+We will begin to observe RDP traffic by changing the Wireshark packet filter to "tcp.port == 3389" then press Enter.
+</p>
+<img width="1919" height="1022" alt="image" src="https://github.com/user-attachments/assets/1b77e129-d326-4119-a172-d883c18ade8e" /> </p>
+The RDP traffic constantly appears to be "spamming" data in Wireshark because its primary job is to keep the remote screen perfectly updated . Even when you're not actively moving the mouse or typing, the server is continuously sending small, frequent packets representing minor changes like a blinking cursor, a clock tick, or background animations. Additionally, RDP uses control and keep-alive messages to constantly monitor and adapt to the network's quality, and the underlying TCP protocol generates a continuous stream of Acknowledgement (ACK) packets for every piece of data received, all of which contribute to the high packet count you see in the capture.
+</p>
+<h2>Step 8 - Project Clean Up</h2>
+
+Virtual Machines cost money to run, so it is important to delete them and all their data after use. </p>
+
+<img width="1300" height="389" alt="image" src="https://github.com/user-attachments/assets/308937e9-41d8-4930-9360-ffe3adf27495" />
+</p>
+The first thing that will be done is to type "Resource Groups" in the Azure Portal search bar. </p>
+An Azure resource group is a logical container that holds related resources for an Azure solution, such as virtual machines, databases, and storage accounts. It allows you to manage the lifecycle (like deployment, updates, and deletion) of these resources together as a single unit.</p>
+
+<img width="1887" height="579" alt="image" src="https://github.com/user-attachments/assets/33bb0ff6-5f5f-48ac-b619-ea1e108a6c5b" /> </p>
+Once inside the resource groups portal, locate the resource group that virtual machines were created in. </p>
+
+
+<img width="1191" height="720" alt="image" src="https://github.com/user-attachments/assets/8e73408f-7ae7-4980-bf7c-0845eb9a1b0f" /> </p>
+
+Once the resource group has been opened up, locate the button that says "Delete resource group" and click on it. </p>
+
+<img width="722" height="812" alt="image" src="https://github.com/user-attachments/assets/74da59c1-9738-4495-8ba7-6ab740482e19" /> </p>
+
+Inside the "Delete resource group" page, click on the "Copy" icon next to the resource group name. Then paste the the resource group name into the section that says "Enter resource group name to confirm deletion". Once this is done, then click on "Delete", and the resource groups with the virtual machines and all of their data will be deleted.
+
+<h2>Conclusion</h2>
+This project effectively demonstrated the use of Wireshark to capture and analyze critical network protocols—ICMP, SSH, DHCP, DNS, and RDP—within Microsoft Azure Virtual Machines, while showcasing the power of Network Security Groups to control and secure traffic flow. By observing live packet exchanges, configuring firewall rules to block ICMP pings, and triggering protocol-specific traffic through commands like ping, SSH login, IP renewal, and DNS lookups, we gained practical insight into how these protocols operate in a cloud environment and how NSGs function as virtual firewalls to enforce security policies. The continuous RDP traffic highlighted the protocol’s role in maintaining real-time remote desktop sessions, reinforcing the importance of monitoring and managing network activity for troubleshooting, security, and performance optimization in Azure deployments.
+
+
+
 
